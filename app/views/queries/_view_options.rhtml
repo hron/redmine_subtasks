@@ -1,0 +1,6 @@
+<% query.view_options.each_key do |voption| -%>
+  <%= query.caption_for_view_option( voption) %>:
+  <%= select_tag( "view_options[#{voption}]",
+		  options_for_select( query.values_for_view_option( voption),
+				      query.view_options[voption])) %>
+<% end %>

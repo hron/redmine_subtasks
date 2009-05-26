@@ -58,10 +58,10 @@ class IssuesControllerTest < Test::Unit::TestCase
     @request.session[:user_id] = 2
     get( :add_subissue, :project_id => 1,
          :issue => {
-           :tracker_id => 3,
-           :subject => "test_add_subissue",
-           :description => "test_add_subissue",
-           :priority_id => 5,
+           :tracker_id      => 3,
+           :priority_id     => 5,
+           :subject         => "test_add_subissue",
+           :description     => "test_add_subissue",
            :estimated_hours => '' },
          :parent_issue_id => 1)
     assert_redirected_to :action => "new"

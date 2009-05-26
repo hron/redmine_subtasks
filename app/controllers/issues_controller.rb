@@ -4,24 +4,19 @@ require_dependency 'issues_controller'
 
 class IssuesController < ApplicationController
 
-  unloadable
+  skip_before_filter :authorize, :only => [ :add_subissue,
+                                            :auto_complete_for_issue_parent]
 
-  skip_before_filter :authorize,
-                     :only => [ :auto_complete_for_issue_parent ]
-
-  before_filter :find_parent_issue,
-                :only => [:add_subissue]
+  before_filter :find_parent_issue, :only => [:add_subissue]
   before_filter :find_optional_parent_issue, :only => [:new]
-  before_filter :find_project, :only => [ :new,
-                                          :update_form,
-                                          :preview,
-                                          :auto_complete_for_issue_parent,
-                                          :add_subissue]
+  before_filter :find_project, :only => [ :add_subissue,
+                                          :auto_complete_for_issue_parent ]
 
   include ActionView::Helpers::PrototypeHelper
   
   def add_subissue
-    redirect_to :action => 'new', :issue => { :parent_id => @parent_issue.id }
+    redirect_to :action => 'new',
+                :issue => { :parent_id => @parent_issue.id }
   end
 
   def auto_complete_for_issue_parent
@@ -62,49 +57,6 @@ class IssuesController < ApplicationController
     render :inline => "<%= auto_complete_result_parent_issue( @candidates, @phrase) %>"
   end
 
-
-  def index_with_subtasks
-    retrieve_query
-    sort_init(@query.sort_criteria.empty? ? [['id', 'desc']] : @query.sort_criteria)
-    sort_update({'id' => "#{Issue.table_name}.id"}.merge(@query.available_columns.inject({}) {|h, c| h[c.name.to_s] = c.sortable; h}))
-    
-    if @query.valid?
-      limit = per_page_option
-      respond_to do |format|
-        format.html { }
-        format.atom { }
-        format.csv  { limit = Setting.issues_export_limit.to_i }
-        format.pdf  { limit = Setting.issues_export_limit.to_i }
-      end
-      @issue_count = Issue.count(:include => [:status, :project], :conditions => @query.statement)
-      @issue_pages = ActionController::Pagination::Paginator.new self, @issue_count, limit, params['page']
-      @issues = Issue.find( :all, :order => sort_clause,
-                            :include => [ :assigned_to,
-                                          :status,
-                                          :tracker,
-                                          :project,
-                                          :priority,
-                                          :category,
-                                          :fixed_version ],
-                            :conditions => @query.statement,
-                            :limit  => limit,
-                            :offset => @issue_pages.current.offset)
-      
-      respond_to do |format|
-        format.html { render :template => 'issues/index.rhtml', :layout => !request.xhr? }
-        format.atom { render_feed(@issues, :title => "#{@project || Setting.app_title}: #{l(:label_issue_plural)}") }
-        format.csv  { send_data(issues_to_csv(@issues, @project).read, :type => 'text/csv; header=present', :filename => 'export.csv') }
-        format.pdf  { send_data(issues_to_pdf(@issues, @project), :type => 'application/pdf', :filename => 'export.pdf') }
-      end
-    else
-      # Send html if the query is not valid
-      render(:template => 'issues/index.rhtml', :layout => !request.xhr?)
-    end
-  rescue ActiveRecord::RecordNotFound
-    render_404
-  end
-  alias_method_chain :index, :subtasks
-  
 
   # Add a new issue
   # The new issue will be created from an existing one if copy_from parameter is given
@@ -153,7 +105,6 @@ class IssuesController < ApplicationController
   end
   alias_method_chain :new, :subtasks
 
-
   private
 
   def find_parent_issue
@@ -172,44 +123,18 @@ class IssuesController < ApplicationController
 
   # Retrieve query from session or build a new query
   def retrieve_query_with_subtasks
-    if !params[:query_id].blank?
-      cond = "project_id IS NULL"
-      cond << " OR project_id = #{@project.id}" if @project
-      @query = Query.find(params[:query_id], :conditions => cond)
-      @query.project = @project
-      session[:query] = {:id => @query.id, :project_id => @query.project_id}
-      sort_clear
-    else
+    RAILS_DEFAULT_LOGGER.info "retrieve_query_with_subtasks execution."
+    retrieve_query_without_subtasks
+    if params[:query_id].blank?
       if params[:set_filter] || session[:query].nil? || session[:query][:project_id] != (@project ? @project.id : nil)
-        # Give it a name, required to be valid
-        @query = Query.new(:name => "_")
-        @query.project = @project
-        if params[:fields] and params[:fields].is_a? Array
-          params[:fields].each do |field|
-            @query.add_filter(field, params[:operators][field], params[:values][field])
-          end
-        else
-          @query.available_filters.keys.each do |field|
-            @query.add_short_filter(field, params[field]) if params[field]
-          end
-        end
         if params[:view_options] and params[:view_options].is_a? Hash
           params[:view_options].each_pair do |name, value|
             @query.set_view_option( name, value)
           end
         end
-        session[:query] = {
-          :project_id => @query.project_id,
-          :filters => @query.filters,
-          :view_options => @query.view_options
-        }
+        session[:query][:view_options] = @query.view_options
       else
-        @query = Query.find_by_id(session[:query][:id]) if session[:query][:id]
-        @query ||= Query.new(:name => "_",
-                             :project => @project,
-                             :filters => session[:query][:filters],
-                             :view_options => session[:query][:view_options])
-        @query.project = @project
+        @query.set_view_option :view_options, session[:query][:view_options]
       end
     end
   end
