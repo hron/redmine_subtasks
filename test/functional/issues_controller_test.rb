@@ -36,7 +36,7 @@ class IssuesControllerTest < Test::Unit::TestCase
 
   def test_new_child_issue
     child_issue_subject = 'This is the test_new child issue'
-    parent_issue = Issue.find(1)
+    parent_issue = issues(:issues_root)
     @request.session[:user_id] = 2
 
     post( :new, :project_id => 1,
@@ -44,9 +44,9 @@ class IssuesControllerTest < Test::Unit::TestCase
             :subject => child_issue_subject,
             :description => 'This is the description',
             :priority_id => 5,
+            :parent_id => parent_issue,
             :estimated_hours => '',
-            :custom_field_values => {'2' => 'Value for field 2'}},
-          :parent_issue_id => 1 )
+            :custom_field_values => {'2' => 'Value for field 2'}})
     child = Issue.find_by_subject( child_issue_subject)
 
     assert_redirected_to "issues/#{child.id}"

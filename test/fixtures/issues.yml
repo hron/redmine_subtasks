@@ -125,6 +125,7 @@ issues_008:
   start_date: 
   due_date: 
   lock_version: 0
+
 issues_root:
   created_on: <%= 10.days.ago.to_date.to_s(:db) %>
   project_id: 1
@@ -246,4 +247,3 @@ issues_subchild003:
   parent_id: 11
   lft: "9"
   rgt: "10"
-  

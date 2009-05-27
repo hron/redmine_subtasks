@@ -3,6 +3,7 @@ require_dependency 'redmine_subtasks/redmine_ext/query_patch'
 require_dependency 'redmine_subtasks/redmine_ext/version_patch'
 require_dependency 'redmine_subtasks/redmine_ext/issues_helper_patch'
 require_dependency 'redmine_subtasks/redmine_ext/queries_helper_patch'
+require_dependency 'redmine_subtasks/redmine_ext/issues_controller_hooks'
 
 class ViewOption
   attr_accessor :name, :available_values
