@@ -47,9 +47,9 @@ class IssuesControllerTest < Test::Unit::TestCase
             :estimated_hours => '',
             :custom_field_values => {'2' => 'Value for field 2'}},
           :parent_issue_id => 1 )
-    assert_redirected_to "issues/#{child.id}"
-
     child = Issue.find_by_subject( child_issue_subject)
+
+    assert_redirected_to "issues/#{child.id}"
     assert( child.parent == parent_issue,
             "New child has Issue id=#{child.parent} as parent, not id=#{parent_issue}")
   end

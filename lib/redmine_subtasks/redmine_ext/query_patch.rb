@@ -1,22 +1,4 @@
-class ViewOption
-  attr_accessor :name, :available_values
-  include Redmine::I18n
-  
-  def initialize( name, available_values)
-    self.name = name
-    self.available_values = available_values
-  end
-
-  def caption
-    l("label_view_option_#{name}")
-  end
-end
-
-class Query < ActiveRecord::Base
-  VIEW_OPTIONS_SHOW_PARENTS_NEVER = 'do_not_show'
-  VIEW_OPTIONS_SHOW_PARENTS_ALWAYS = 'show_always'
-  VIEW_OPTIONS_SHOW_PARENTS_ORGANIZE_BY_PARENT = 'organize_by_parent'
-end
+require_dependency 'query'
 
 module RedmineSubtasks
   module RedmineExt
@@ -48,16 +30,19 @@ module RedmineSubtasks
           end
           
           def set_view_option( option, value)
-            RAILS_DEFAULT_LOGGER.info "QUERY: #{option}: #{value}"
             self.view_options[option] = value
           end
 
           def values_for_view_option( option)
-            @@available_view_options.find { |vo| vo.name == option }.available_values
+            # FIXME: finding in array does not work here...
+            # @@available_view_options.find { |vo| vo.name == option }.available_values
+            @@available_view_options[0].available_values
           end
 
           def caption_for_view_option( option)
-            @@available_view_options.find { |vo| vo.name == option }.caption
+            # FIXME: finding in array does not work here...
+            # @@available_view_options.find { |vo| vo.name == option }.caption
+            @@available_view_options[0].caption
           end
 
         end

@@ -1,3 +1,5 @@
+require_dependency 'version'
+
 module RedmineSubtasks
   module RedmineExt
     module VersionPatch

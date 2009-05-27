@@ -1,5 +1,5 @@
-require 'issue'
 require 'redmine_subtasks/redmine_ext/awesome_nested_set_patch'
+require_dependency 'issue'
 
 module RedmineSubtasks
   module RedmineExt
