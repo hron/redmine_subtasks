@@ -1,5 +1,5 @@
 <div class="contextual">
-<%= link_to_if_authorized(l(:button_add_subissue),
+<%= link_to_if_authorized(l(:subtasks_button_add_subissue),
 			  { :controller => 'issues', :action => 'add_subissue',
 			    :project_id => @project.id, :parent_issue_id => @issue.id },
 			  :class => 'icon icon-add') %>

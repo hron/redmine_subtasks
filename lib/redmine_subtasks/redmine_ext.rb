@@ -5,6 +5,8 @@ require_dependency 'redmine_subtasks/redmine_ext/issues_helper_patch'
 require_dependency 'redmine_subtasks/redmine_ext/queries_helper_patch'
 require_dependency 'redmine_subtasks/redmine_ext/issues_controller_hooks'
 
+
+
 class ViewOption
   attr_accessor :name, :available_values
   include Redmine::I18n
@@ -15,7 +17,7 @@ class ViewOption
   end
 
   def caption
-    l("label_view_option_#{name}")
+    l("subtasks_label_view_option_#{name}")
   end
 end
 

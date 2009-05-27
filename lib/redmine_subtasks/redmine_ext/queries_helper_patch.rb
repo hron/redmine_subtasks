@@ -40,12 +40,15 @@ module RedmineSubtasks
         end
         
         def subject_in_tree(issue, value, query)
-          RAILS_DEFAULT_LOGGER.info "QUERY: #{query.view_options}"
           case query.view_options['show_parents']
           when Query::VIEW_OPTIONS_SHOW_PARENTS_NEVER
             content_tag('div', subject_text(issue, value), :class=>'issue-subject')
           else
-            content_tag('span', content_tag('div', subject_text(issue, value), :class=>'issue-subject'), :class=>"issue-subject-level-#{issue.hierarchical_level}")
+            content_tag('span',
+                        content_tag('div',
+                                    subject_text(issue, value),
+                                    :class=>'issue-subject'),
+                        :class=>"issue-subject-level-#{issue.hierarchical_level}")
           end
         end
         

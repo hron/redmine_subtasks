@@ -1,0 +1,55 @@
+/***** Subtasks *****/
+/*blocks composed of icon (+, - or none), project identification (if there is one) and link to the task*/
+.issue-subject-level-1, .issue-subject-level-1 .issue-subject { 
+    margin-left: 0em;
+}
+
+.issue-subject-level-2, .issue-subject-level-2 .issue-subject { 
+    margin-left: 1em;
+}
+
+.issue-subject-level-3, .issue-subject-level-3 .issue-subject { 
+    margin-left: 2em;
+}
+
+.issue-subject-level-4, .issue-subject-level-4 .issue-subject { 
+    margin-left: 3em;
+}
+
+.issue-subject-level-5, .issue-subject-level-5 .issue-subject { 
+    margin-left: 4em;
+}
+
+.issue-subject-level-2, .issue-subject-level-2 .issue-subject, .issue-subject-level-3, .issue-subject-level-3 .issue-subject, .issue-subject-level-4, .issue-subject-level-4 .issue-subject, .issue-subject-level-5, .issue-subject-level-5 .issue-subject { 
+    background-image: url(../images/corner-dots.gif);
+    background-repeat: no-repeat;
+    background-position: -3px center;
+}
+
+/* Used to show issues which is not pass by filter, but should by
+   shown as parent for other issue. */
+.issue-unfiltered {
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+.expanded-issue {
+	background-image: url(contract.png);
+	background-repeat: no-repeat;
+}
+
+.contracted-issue {
+	background-image: url(expand.png);
+	background-repeat: no-repeat;
+}
+
+.expand-icon, .contract-icon{
+/* 	position: absolute; */
+	vertical-align: middle;
+}
+
+/*text after the icon, which needs to be indented so that all its lines stay completely after the icon*/
+.issue-subject{
+	padding-left: 1em;
+}
+

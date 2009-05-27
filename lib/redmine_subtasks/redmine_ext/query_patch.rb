@@ -15,11 +15,11 @@ module RedmineSubtasks
 
           @@available_view_options =
             [ ViewOption.new( 'show_parents',
-                              [ [ l(:label_view_option_parents_do_not_show), 
+                              [ [ l(:subtasks_label_view_option_parents_do_not_show), 
                                   Query::VIEW_OPTIONS_SHOW_PARENTS_NEVER ],
-                                [ l(:label_view_option_parents_show_always), 
+                                [ l(:subtasks_label_view_option_parents_show_always), 
                                   Query::VIEW_OPTIONS_SHOW_PARENTS_ALWAYS ],
-                                [ l(:label_view_option_parents_show_and_group), 
+                                [ l(:subtasks_label_view_option_parents_show_and_group), 
                                   Query::VIEW_OPTIONS_SHOW_PARENTS_ORGANIZE_BY_PARENT ] ]) ]
           cattr_reader :available_view_options
 

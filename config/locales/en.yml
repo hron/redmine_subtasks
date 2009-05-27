@@ -1,4 +1,15 @@
-# Sample plugin
 en:
-  label_plugin_example: Sample Plugin
-  label_meeting_plural: Meetings
+  subtasks_label_view: "View options"
+  subtasks_field_parent: Subproject of
+  subtasks_field_parent_issue: Child of
+  subtasks_field_parent_title: Parent page
+
+  subtasks_label_children: parent of
+  subtasks_label_parents: child of
+  subtasks_label_view_option_parents_do_not_show: Never
+  subtasks_label_view_option_parents_show_always: Always
+  subtasks_label_view_option_parents_show_and_group: Organize by parent
+  subtasks_label_view_option_show_parents: Show parents
+
+  subtasks_button_add_subissue: Add sub-issue
+

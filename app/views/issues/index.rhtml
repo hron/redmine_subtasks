@@ -1,14 +1,18 @@
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'stylesheet', :plugin => 'redmine_subtasks' %>
+<% end %>
+
 <% if @query.new_record? %>
     <h2><%=l(:label_issue_plural)%></h2>
     <% html_title(l(:label_issue_plural)) %>
     
     <% form_tag({ :controller => 'queries', :action => 'new' }, :id => 'query_form') do %>
     <%= hidden_field_tag('project_id', @project.to_param) if @project %>
-    <fieldset id="view"><legend><%= l(:label_view) %></legend>
-      <%= render :partial => 'queries/view_options', :locals => {:query => @query } %>
-    </fieldset>
     <fieldset id="filters"><legend><%= l(:label_filter_plural) %></legend>
       <%= render :partial => 'queries/filters', :locals => {:query => @query} %>
+    </fieldset>
+    <fieldset id="view"><legend><%= l(:subtasks_label_view) %></legend>
+      <%= render :partial => 'queries/view_options', :locals => {:query => @query } %>
     </fieldset>
     <p class="buttons">
     <%= link_to_remote l(:button_apply), 

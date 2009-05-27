@@ -50,11 +50,11 @@
 <p><label><%= l(:field_done_ratio) %></label> <%= "#{@issue.done_ratio}%" %></p>
 <% end %>
 <%= content_tag( :input, {}, 
-		 :id => :parent_issue_id,
+		 :id => :issue_parent_id,
 		 :type => :hidden,
-		 :name => 'parent_issue_id',
+		 :name => 'issue[parent_id]',
 		 :value => @parent_issue ? @parent_issue.id : "") %>
-<p><label><%= l(:field_parent_issue) %></label>
+<p><label><%= l(:subtasks_field_parent_issue) %></label>
 <% if authorize_for( 'issues', 'add_subissue') %>
   <%= text_field_tag( 'parent_issue', '',
 		      :size => 80, 
@@ -69,7 +69,7 @@
                                                 frequency: 0.5,
                                                 paramName: 'issue_parent',
                                                 afterUpdateElement: function(element, value) {
-                                                  document.getElementById('parent_issue_id').value = value.id;
+                                                  document.getElementById('issue_parent_id').value = value.id;
                                                 }});" %>
 <% else %>
   <%= @parent_issue || "-" %>
