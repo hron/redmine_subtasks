@@ -82,7 +82,9 @@ class IssuesControllerTest < Test::Unit::TestCase
 
   def test_index_view_option_always_show_parents
     @request.session[:user_id] = 2
-    get( :index, :project_id => 1,
+    get( :index,
+         :project_id => 1,
+         :set_filter => 1,
          :view_options => { :show_parents => "show_always"})
     assert_response :success
     assert_tag( :tag => 'span', 

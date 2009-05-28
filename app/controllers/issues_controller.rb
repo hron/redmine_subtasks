@@ -90,8 +90,9 @@ class IssuesController < ApplicationController
 
       def retrieve_query_with_subtasks
         retrieve_query_without_subtasks
+        debugger
         if params[:query_id].blank?
-          if params[:set_filter] || session[:query].nil? || session[:query][:project_id] != (@project ? @project.id : nil)
+          if params[:set_filter]
             if params[:view_options] and params[:view_options].is_a? Hash
               params[:view_options].each_pair do |name, value|
                 @query.set_view_option( name, value)
