@@ -76,13 +76,11 @@ class IssuesController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     render_404
   end
-  
+
   def find_optional_parent_issue
     if params[:issue] && !params[:issue][:parent_id].blank?
       @parent_issue = Issue.find( params[:issue][:parent_id])
     end
-  rescue ActiveRecord::RecordNotFound
-    render_404
   end
 
   def redmine_ext
@@ -108,6 +106,14 @@ class IssuesController < ApplicationController
         end
       end
       alias_method_chain :retrieve_query, :subtasks
+
+      def find_issue_with_subtasks
+        find_issue_without_subtasks
+        @parent_issue = @issue.parent
+      rescue ActiveRecord::RecordNotFound
+        render_404
+      end
+      alias_method_chain :find_issue, :subtasks
 
     end
   end

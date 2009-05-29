@@ -182,7 +182,7 @@ module RedmineSubtasks
             if children?
               children_date = children.find_all { |i| i.due_date } 
               unless children_date.empty?
-                children_date.sort { |a,b| a.due_date <=> b.due_date} .max
+                children_date.sort { |a,b| a.due_date <=> b.due_date} .max .due_date
               else
                 read_attribute(:due_date)
               end

@@ -1,5 +1,5 @@
 class AddIssuesParentIdLftAndRgt < ActiveRecord::Migration
-  
+
   def self.up
     add_column :issues, :parent_id, :integer, :default => nil
     add_column :issues, :lft, :integer
