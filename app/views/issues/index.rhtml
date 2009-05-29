@@ -8,13 +8,16 @@
     
     <% form_tag({ :controller => 'queries', :action => 'new' }, :id => 'query_form') do %>
     <%= hidden_field_tag('project_id', @project.to_param) if @project %>
+		<div id="query_form_content">
     <fieldset id="filters"><legend><%= l(:label_filter_plural) %></legend>
-      <%= render :partial => 'queries/filters', :locals => {:query => @query} %>
+    <%= render :partial => 'queries/filters', :locals => {:query => @query} %>
     </fieldset>
-    <fieldset id="view"><legend><%= l(:subtasks_label_view) %></legend>
-      <%= render :partial => 'queries/view_options', :locals => {:query => @query } %>
-    </fieldset>
+		<p><%= l(:field_group_by) %>
+		<%= select_tag('group_by', options_for_select([[]] + @query.groupable_columns.collect {|c| [c.caption, c.name.to_s]}, @query.group_by)) %></p>
+		<%= render :partial => 'queries/view_options', :locals => {:query => @query } %>
+		</div>
     <p class="buttons">
+
     <%= link_to_remote l(:button_apply), 
                        { :url => { :set_filter => 1 },
                          :update => "content",
@@ -43,6 +46,7 @@
     <div id="query_form"></div>
     <% html_title @query.name %>
 <% end %>
+
 <%= error_messages_for 'query' %>
 <% if @query.valid? %>
 <% if @issues.empty? %>
@@ -73,3 +77,4 @@
 
 <div id="context-menu" style="display: none;"></div>
 <%= javascript_tag "new ContextMenu('#{url_for(:controller => 'issues', :action => 'context_menu')}')" %>
+
