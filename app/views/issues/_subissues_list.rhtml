@@ -1,0 +1,26 @@
+  <% if @issue.root.self_and_descendants.size > 1 %>
+  <% content_for :header_tags do %>
+    <%= javascript_include_tag 'context_menu' %>
+    <%= stylesheet_link_tag 'context_menu' %>
+  <% end %>
+	<hr />
+  <p><strong><%=l(:subtasks_label_subissues)%></strong></p>
+  <div id="subissues">
+  <%
+    query = Query.new(:name => "_")
+    query.project = @project
+		query.set_view_option( 'show_parents',
+													 Query::VIEW_OPTIONS_SHOW_PARENTS_ORGANIZE_BY_PARENT)
+    query.column_names = [:id, :subject, :status, :start_date, :due_date]
+
+    sort_init(query.sort_criteria.empty? ? [['id', 'desc']] : query.sort_criteria)
+    sort_update({'id' => "#{Issue.table_name}.id"}.merge(query.available_columns.inject({}) {|h, c| h[c.name.to_s] = c.sortable; h}))
+  %>
+  <%= render( :partial => 'issues/list',
+							:locals => {
+								:issues => @issue.root.self_and_descendants,
+								:query => query }) %>
+  </div>
+  <div id="context-menu" style="display: none;"></div>
+  <%= javascript_tag "new ContextMenu('#{url_for(:controller => 'issues', :action => 'context_menu')}')" %>
+	<% end %>

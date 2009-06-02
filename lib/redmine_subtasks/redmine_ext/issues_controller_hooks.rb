@@ -9,5 +9,8 @@ class RedmineSubtasksIssuesControllerHooks < Redmine::Hook::Listener
   end
 end
 
+class RedmineSubtasksIssuesControllerViewHooks < Redmine::Hook::ViewListener
+  render_on :view_issues_show_description_bottom, :partial => "issues/subissues_list"
+end
 
     

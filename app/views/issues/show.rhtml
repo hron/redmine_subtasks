@@ -1,3 +1,7 @@
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'stylesheet', :plugin => 'redmine_subtasks' %>
+<% end %>
+
 <div class="contextual">
 <%= link_to_if_authorized(l(:subtasks_button_add_subissue),
 			  { :controller => 'issues', :action => 'add_subissue',
