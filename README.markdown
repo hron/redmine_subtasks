@@ -5,8 +5,8 @@ This is a plugin for [Redmine](http://www.redmine.org). It was
 inspired from Redmine patch issue
 [#443](http://www.redmine.org/issues/443).
 
-Plugin's migrations **supports** both methods of converting database
-from previously patch and migrate plain, clean Redmine.
+Plugin's migrations **support** both methods of converting database
+from previously patch and migrate from plain, clean Redmine.
 
 ## Features
 
@@ -14,7 +14,7 @@ from previously patch and migrate plain, clean Redmine.
   three options here:
 
 	 + never see issues's hierarchy (sorting and filtering works
-      exactly in right behavior),
+     exactly in right behavior),
 			
 	 + always show parent (sorting and filtering works exactly in right
 	 	 behavior, but extra issue can be appearing to show issue's parents
