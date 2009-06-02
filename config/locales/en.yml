@@ -10,6 +10,7 @@ en:
   subtasks_label_view_option_parents_show_always: Always
   subtasks_label_view_option_parents_show_and_group: Organize by parent
   subtasks_label_view_option_show_parents: Show parents
+  subtasks_label_subissues: Issues hierarchy
 
   subtasks_button_add_subissue: Add sub-issue
 
