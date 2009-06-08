@@ -1,7 +1,19 @@
-<p><label><%= l(:subtasks_field_settings_delete_children)%></label>
+<p><label><%= l(:subtasks_label_settings_delete_children)%></label>
 	<%= select_tag( 'settings[delete_children]',
 									options_for_select( [ [ "Yes", "1" ],
 																				[ "No",  "0" ] ],
 																			@settings[:delete_children])) %>
 </p>
 
+<p>
+<label><%= l(:subtasks_label_settings_subissues_list_columns) %></label>
+<%= hidden_field_tag 'settings[subissues_list_columns][]', '' %>
+<% Query.new.available_columns.each do |column| %>
+	<label class="floating">
+		<%= check_box_tag( 'settings[subissues_list_columns][]',
+											 column.name,
+											 @settings[:subissues_list_columns].include?( column.name.to_s)) %>
+		<%= column.caption %>
+	</label>
+<% end %>
+</p>

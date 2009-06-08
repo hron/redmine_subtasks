@@ -2,7 +2,6 @@ en:
   subtasks_field_parent: Subproject of
   subtasks_field_parent_issue: Child of
   subtasks_field_parent_title: Parent page
-  subtasks_field_settings_delete_children: Delete children when parent destroyed
 
   subtasks_label_view: "View options"
   subtasks_label_children: parent of
@@ -12,6 +11,8 @@ en:
   subtasks_label_view_option_parents_show_and_group: Organize by parent
   subtasks_label_view_option_show_parents: Show parents
   subtasks_label_subissues: Issues hierarchy
+  subtasks_label_settings_subissues_list_columns: Columns for subissues list
+  subtasks_label_settings_delete_children: Delete children when parent destroyed
 
   subtasks_button_add_subissue: Add sub-issue
 

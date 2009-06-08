@@ -14,7 +14,12 @@ Redmine::Plugin.register :redmine_subtasks do
   version '0.0.1'
   requires_redmine :version_or_higher => '0.8.0'
 
-  settings :default => { :delete_children => 1 },
+  settings :default => { :delete_children => 1,
+                         :subissues_list_columns => [ :id,
+                                                      :subject, 
+                                                      :status,
+                                                      :start_date,
+                                                      :due_date ] },
            :partial => 'settings/subtasks_settings'
     
   # remapping permissions
