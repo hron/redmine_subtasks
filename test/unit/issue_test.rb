@@ -6,7 +6,10 @@ class IssueTest < Test::Unit::TestCase
             :issue_statuses, :issue_categories,
             :enumerations,
             :issues,
-            :custom_fields, :custom_fields_projects, :custom_fields_trackers, :custom_values,
+            :custom_fields,
+            :custom_fields_projects,
+            :custom_fields_trackers,
+            :custom_values,
             :time_entries,
             :versions)
 
@@ -120,7 +123,7 @@ class IssueTest < Test::Unit::TestCase
   def test_should_update_due_to_date_if_target_version_is_set_but_due_to_is_not
     @issue = Issue.new( :project_id => 1, :tracker_id => 1,
                         :author_id => 1, :status_id => 1,
-                        :priority => Enumeration.priorities.first,
+                        :priority => IssuePriority.priorities.first,
                         :subject => 'issue for test hook which set due_to when sets target version.',
                         :description => 'issue for test hook which set due_to when sets target version.')
 
@@ -131,13 +134,37 @@ class IssueTest < Test::Unit::TestCase
     assert @issue.reload.due_date == @issue.reload.fixed_version.due_date
   end
 
+  def test_settings_delete_children_on
+    with_settings :plugin_redmine_subtasks => { :delete_children => "1" } do
+      @root = issues( :issues_root)
+      children_before_delete = @root.children.clone
+      assert @root.destroy, "failed to destroy parent issue"
+      assert_raise ActiveRecord::RecordNotFound do
+        children_before_delete.each( &:reload)
+      end
+    end
+  end
+  
+  def test_settings_delete_children_off
+    with_settings :plugin_redmine_subtasks => { :delete_children => "0" } do
+      @root = issues( :issues_root)
+      children_before_delete = @root.children.clone
+      assert @root.destroy, "failed to destroy parent issue"
+      assert_nothing_raised do
+        children_before_delete.each( &:reload)
+      end
+    end
+  end
+  
   private
 
+  # TODO: rewrite all test used this method to using fixtures
+  # instead of creating families of issues.
   def create_family_of_issues( subject)
     # Create 3 issues
     @issue1 = Issue.new( :project_id  => 1, :tracker_id => 1,
                          :author_id   => 1, :status_id => 1,
-                         :priority    => Enumeration.priorities.first,
+                         :priority    => IssuePriority.priorities.first,
                          :subject     => subject,
                          :description => subject)
     assert @issue1.save

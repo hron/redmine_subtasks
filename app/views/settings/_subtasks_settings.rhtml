@@ -1,0 +1,7 @@
+<p><label><%= l(:subtasks_field_settings_delete_children)%></label>
+	<%= select_tag( 'settings[delete_children]',
+									options_for_select( [ [ "Yes", "1" ],
+																				[ "No",  "0" ] ],
+																			@settings[:delete_children])) %>
+</p>
+

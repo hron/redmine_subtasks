@@ -95,7 +95,7 @@ issues_007:
   created_on: <%= 10.days.ago.to_date.to_s(:db) %>
   project_id: 1
   updated_on: <%= 10.days.ago.to_date.to_s(:db) %>
-  priority_id: 3
+  priority_id: 4
   subject: Issue due today
   id: 7
   fixed_version_id: 
@@ -112,7 +112,7 @@ issues_008:
   created_on: <%= 10.days.ago.to_date.to_s(:db) %>
   project_id: 1
   updated_on: <%= 10.days.ago.to_date.to_s(:db) %>
-  priority_id: 3
+  priority_id: 4
   subject: Closed issue
   id: 8
   fixed_version_id: 
@@ -130,7 +130,7 @@ issues_root:
   created_on: <%= 10.days.ago.to_date.to_s(:db) %>
   project_id: 1
   updated_on: <%= 10.days.ago.to_date.to_s(:db) %>
-  priority_id: 3
+  priority_id: 4
   subject: root
   id: 9
   fixed_version_id: 
@@ -151,7 +151,7 @@ issues_child001:
   created_on: <%= 10.days.ago.to_date.to_s(:db) %>
   project_id: 1
   updated_on: <%= 10.days.ago.to_date.to_s(:db) %>
-  priority_id: 3
+  priority_id: 4
   subject: child001
   id: 10
   fixed_version_id: 
@@ -171,7 +171,7 @@ issues_child002:
   created_on: <%= 10.days.ago.to_date.to_s(:db) %>
   project_id: 1
   updated_on: <%= 10.days.ago.to_date.to_s(:db) %>
-  priority_id: 3
+  priority_id: 4
   subject: child002
   id: 11
   fixed_version_id: 
@@ -191,7 +191,7 @@ issues_subchild001:
   created_on: <%= 10.days.ago.to_date.to_s(:db) %>
   project_id: 1
   updated_on: <%= 10.days.ago.to_date.to_s(:db) %>
-  priority_id: 3
+  priority_id: 4
   subject: subchild001
   id: 12
   fixed_version_id: 
@@ -211,7 +211,7 @@ issues_subchild002:
   created_on: <%= 10.days.ago.to_date.to_s(:db) %>
   project_id: 1
   updated_on: <%= 10.days.ago.to_date.to_s(:db) %>
-  priority_id: 3
+  priority_id: 4
   subject: subchild002
   id: 13
   fixed_version_id: 
@@ -231,7 +231,7 @@ issues_subchild003:
   created_on: <%= 10.days.ago.to_date.to_s(:db) %>
   project_id: 1
   updated_on: <%= 10.days.ago.to_date.to_s(:db) %>
-  priority_id: 3
+  priority_id: 4
   subject: subchild003
   id: 14
   fixed_version_id: 

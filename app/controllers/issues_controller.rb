@@ -109,7 +109,7 @@ class IssuesController < ApplicationController
 
       def find_issue_with_subtasks
         find_issue_without_subtasks
-        @parent_issue = @issue.parent
+        @parent_issue = @issue.parent if @issue
       rescue ActiveRecord::RecordNotFound
         render_404
       end

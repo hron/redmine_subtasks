@@ -7,6 +7,15 @@ module RedmineSubtasks
 
       def self.included(base)
         base.class_eval do
+
+          def move_children_to_root_before_destroy
+            unless RedmineSubtasks::Setting.delete_children?
+              children.each( &:move_to_root)
+              reload_nested_set
+            end
+          end
+          before_destroy :move_children_to_root_before_destroy
+          
           acts_as_nested_set
 
           after_save :do_subtasks_hooks
@@ -94,6 +103,7 @@ module RedmineSubtasks
             end
           end
 
+          
           # Moves/copies an issue to a new project and tracker
           # Returns the moved/copied issue on success, false on failure
           def move_to(new_project, new_tracker = nil, options = {})
@@ -105,7 +115,7 @@ module RedmineSubtasks
                     end
             transaction do
               if new_project && issue.project_id != new_project.id
-                unless Setting.cross_project_issue_relations?
+                unless ::Setting.cross_project_issue_relations?
                   # delete issue relations
                   issue.relations_from.clear
                   issue.relations_to.clear

@@ -4,6 +4,8 @@ namespace :test do
     RedmineSubtasks::Testing.override_core_fixtures
   end
 
-  Rake::Task["test:plugins"].prerequisites << "test:override_core_fixtures"
+  [ "test:plugins" ].each do |t|
+    Rake::Task[t].prerequisites << "test:override_core_fixtures"
+  end
 end
 

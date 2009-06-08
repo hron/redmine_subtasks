@@ -1,9 +1,10 @@
 en:
-  subtasks_label_view: "View options"
   subtasks_field_parent: Subproject of
   subtasks_field_parent_issue: Child of
   subtasks_field_parent_title: Parent page
+  subtasks_field_settings_delete_children: Delete children when parent destroyed
 
+  subtasks_label_view: "View options"
   subtasks_label_children: parent of
   subtasks_label_parents: child of
   subtasks_label_view_option_parents_do_not_show: Never
