@@ -1,5 +1,4 @@
 require 'redmine_subtasks/redmine_ext/awesome_nested_set_patch'
-require_dependency 'issue'
 
 module RedmineSubtasks
   module RedmineExt
@@ -15,7 +14,7 @@ module RedmineSubtasks
             end
           end
           before_destroy :move_children_to_root_before_destroy
-          
+
           acts_as_nested_set
 
           after_save :do_subtasks_hooks
@@ -103,7 +102,6 @@ module RedmineSubtasks
             end
           end
 
-          
           # Moves/copies an issue to a new project and tracker
           # Returns the moved/copied issue on success, false on failure
           def move_to(new_project, new_tracker = nil, options = {})
@@ -152,7 +150,7 @@ module RedmineSubtasks
             end
             return issue
           end
-          
+
           def done_ratio
             if children?
               @total_planned_days ||= 0
@@ -168,7 +166,7 @@ module RedmineSubtasks
               read_attribute(:done_ratio)
             end
           end
-
+          
           def estimated_hours
             if children?
               is_set = false
@@ -200,7 +198,7 @@ module RedmineSubtasks
               read_attribute(:due_date)
             end
           end  
-          
+
           def children?
             children != []
           end
@@ -222,6 +220,28 @@ module RedmineSubtasks
             end
             issues.uniq
           end
+
+          def estimated_hours_with_subtasks=( h)
+            if children?
+              write_attribute :estimated_hours, nil
+            else
+              estimated_hours_without_subtasks=( h)
+            end
+          end
+          alias_method_chain :estimated_hours=, :subtasks
+          
+          # [ :due_date, :done_ratio ].each do |method|
+          #   src = <<-END_SRC
+          #   def #{method}=(value)
+          #     if children?
+          #       write_attribute :#{method}, nil
+          #     else
+          #       write_attribute :#{method}, :value
+          #     end
+          #   end
+          #   END_SRC
+          #   class_eval src, __FILE__, __LINE__
+          # end
 
           protected
 

@@ -1,4 +1,3 @@
-require_dependency 'redmine_subtasks/redmine_ext'
 require_dependency 'issues_controller'
 
 class IssuesController < ApplicationController
@@ -23,7 +22,6 @@ class IssuesController < ApplicationController
                                          :preview,
                                          :update_form,
                                          :context_menu]
-  
   include ActionView::Helpers::PrototypeHelper
   
   def add_subissue
@@ -114,11 +112,10 @@ class IssuesController < ApplicationController
     retrieve_query
     @query.project = @project
 		@query.set_view_option( 'show_parents',
-                            Query::VIEW_OPTIONS_SHOW_PARENTS_ORGANIZE_BY_PARENT)
+                            ViewOption::SHOW_PARENTS[:organize_by])
     @query.column_names = RedmineSubtasks::Setting.subissues_list_columns
     sort_init( @query.sort_criteria.empty? ? [['id', 'desc']] : @query.sort_criteria)
-    sort_update(
-                {'id' => "#{Issue.table_name}.id"}.merge( @query.available_columns.inject({}) { |h, c| h[c.name.to_s] = c.sortable; h}))
+    sort_update({'id' => "#{Issue.table_name}.id"}.merge( @query.available_columns.inject({}) { |h, c| h[c.name.to_s] = c.sortable; h}))
 
     @journals = @issue.journals.find(:all, :include => [:user, :details], :order => "#{Journal.table_name}.created_on ASC")
     @journals.each_with_index {|j,i| j.indice = i+1}

@@ -41,7 +41,7 @@ module RedmineSubtasks
         
         def subject_in_tree(issue, value, query)
           case query.view_options['show_parents']
-          when Query::VIEW_OPTIONS_SHOW_PARENTS_NEVER
+          when ViewOption::SHOW_PARENTS[:never]
             content_tag('div', subject_text(issue, value), :class=>'issue-subject')
           else
             content_tag('span',

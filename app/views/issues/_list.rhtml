@@ -10,18 +10,18 @@
         <% end %>
       </tr></thead>
     <tbody>
-      <% if query.view_options['show_parents'] == Query::VIEW_OPTIONS_SHOW_PARENTS_NEVER -%>
+      <% if query.view_options['show_parents'] == ViewOption::SHOW_PARENTS[:never] -%>
 				<% issues.each do |issue| -%>
 					<%= issue_content( issue, query) %>
 				<% end -%>
-      <% elsif query.view_options['show_parents'] == Query::VIEW_OPTIONS_SHOW_PARENTS_ALWAYS -%>
+      <% elsif query.view_options['show_parents'] == ViewOption::SHOW_PARENTS[:always] -%>
 				<% issues.each do |issue| -%>
 					<% issue.ancestors.reverse.each do |parent_issue| -%>
 						<%= issue_content( parent_issue, query, :unfiltered => true) %>
 					<% end -%>
 					<%= issue_content( issue, query) %>
 				<% end -%>
-      <% elsif query.view_options['show_parents'] == Query::VIEW_OPTIONS_SHOW_PARENTS_ORGANIZE_BY_PARENT -%>
+      <% elsif query.view_options['show_parents'] == ViewOption::SHOW_PARENTS[:organize_by] -%>
 				<% parents_on_first_lvl = []
 					 issues.each do |i|
 						 if i.parent

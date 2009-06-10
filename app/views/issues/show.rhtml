@@ -4,9 +4,11 @@
 
 <div class="contextual">
 <%= link_to_if_authorized(l(:subtasks_button_add_subissue),
-			  { :controller => 'issues', :action => 'add_subissue',
-			    :project_id => @project.id, :parent_issue_id => @issue.id },
-			  :class => 'icon icon-add') %>
+													{ :controller => 'issues',
+														:action => 'add_subissue',
+														:project_id => @project.id,
+														:parent_issue_id => @issue.id },
+													:class => 'icon icon-add') %>
 <%= link_to_if_authorized(l(:button_update), {:controller => 'issues', :action => 'edit', :id => @issue }, :onclick => 'showAndScrollTo("update", "notes"); return false;', :class => 'icon icon-edit', :accesskey => accesskey(:edit)) %>
 <%= link_to_if_authorized l(:button_log_time), {:controller => 'timelog', :action => 'edit', :issue_id => @issue}, :class => 'icon icon-time-add' %>
 <%= watcher_tag(@issue, User.current) %>

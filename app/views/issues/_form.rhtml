@@ -57,8 +57,11 @@
 <p><label><%= l(:subtasks_field_parent_issue) %></label>
 <% if authorize_for( 'issues', 'add_subissue') %>
   <%= text_field_tag( 'parent_issue', '',
-		      :size => 32, 
+		      :size => 20, 
 		      :value => @parent_issue || "") %>
+	<%= link_to_function( "Remove",
+												"document.getElementById('issue_parent_id').value = 'root'; 
+                         document.getElementById('parent_issue').value = ''") %>
   <div id="parent_issue_candidates" class="autocomplete"></div>
   <%= javascript_tag "new Ajax.Autocompleter( 'parent_issue',
                                               'parent_issue_candidates',

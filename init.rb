@@ -1,7 +1,10 @@
+require 'dispatcher'
+
 require 'redmine'
+
 require 'redmine_subtasks/setting'
 require 'redmine_subtasks/redmine_ext'
-require 'redmine_subtasks/redmine_ext/issues_controller_hooks'
+require 'redmine_subtasks/issues_controller_hooks'
 
 RAILS_DEFAULT_LOGGER.info 'Starting Subtasks plugin for RedMine'
 
@@ -10,7 +13,7 @@ Redmine::Plugin.register :redmine_subtasks do
   author 'Aleksei Gusev'
   author_url 'mailto:Aleksei Gusev <aleksei.gusev@gmail.com>?subject=redmine_subtasks'
   description 'This is plugin for Redmine for adding subtasks functionality.'
-  url 'http://github.com/hron/redmine_subtasks/tree/master'
+  url 'http://github.com/hron/redmine_subtasks'
   version '0.0.1'
   requires_redmine :version_or_higher => '0.8.0'
 
@@ -33,5 +36,14 @@ Redmine::Plugin.register :redmine_subtasks do
     }
   end
 
+end
+
+Dispatcher.to_prepare do
+  Issue.send( :include, RedmineSubtasks::RedmineExt::IssuePatch)
+  Version.send( :include, RedmineSubtasks::RedmineExt::VersionPatch)
+  Query.send( :include, RedmineSubtasks::RedmineExt::QueryPatch)
+  IssuesHelper.send(:include, RedmineSubtasks::RedmineExt::IssuesHelperPatch)
+  QueriesHelper.send(:include, RedmineSubtasks::RedmineExt::QueriesHelperPatch)
+  VersionsHelper.send(:include, RedmineSubtasks::RedmineExt::VersionsHelperPatch)
 end
 

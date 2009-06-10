@@ -1,4 +1,3 @@
-require_dependency 'query'
 
 module RedmineSubtasks
   module RedmineExt
@@ -16,11 +15,12 @@ module RedmineSubtasks
           @@available_view_options =
             [ ViewOption.new( 'show_parents',
                               [ [ l(:subtasks_label_view_option_parents_do_not_show), 
-                                  Query::VIEW_OPTIONS_SHOW_PARENTS_NEVER ],
+                                  ViewOption::SHOW_PARENTS[:never] ],
                                 [ l(:subtasks_label_view_option_parents_show_always), 
-                                  Query::VIEW_OPTIONS_SHOW_PARENTS_ALWAYS ],
+                                  ViewOption::SHOW_PARENTS[:always] ],
                                 [ l(:subtasks_label_view_option_parents_show_and_group), 
-                                  Query::VIEW_OPTIONS_SHOW_PARENTS_ORGANIZE_BY_PARENT ] ]) ]
+                                  ViewOption::SHOW_PARENTS[:organize_by]]])
+            ]
           cattr_reader :available_view_options
 
           def initialize(attributes = nil)
@@ -34,15 +34,11 @@ module RedmineSubtasks
           end
 
           def values_for_view_option( option)
-            # FIXME: finding in array does not work here...
-            # @@available_view_options.find { |vo| vo.name == option }.available_values
-            @@available_view_options[0].available_values
+            @@available_view_options.find { |vo| vo.name == option }.available_values
           end
 
           def caption_for_view_option( option)
-            # FIXME: finding in array does not work here...
-            # @@available_view_options.find { |vo| vo.name == option }.caption
-            @@available_view_options[0].caption
+            @@available_view_options.find { |vo| vo.name == option }.caption
           end
 
         end

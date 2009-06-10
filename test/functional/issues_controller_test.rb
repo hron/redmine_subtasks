@@ -36,15 +36,16 @@ class IssuesControllerTest < Test::Unit::TestCase
 
   def test_new_child_issue
     child_issue_subject = 'This is the test_new child issue'
-    parent_issue = issues(:issues_root)
+    parent_issue = issues( :issues_root)
     @request.session[:user_id] = 2
 
     post( :new, :project_id => 1,
+          :parent_issue => parent_issue,
           :issue => {:tracker_id => 3,
             :subject => child_issue_subject,
             :description => 'This is the description',
             :priority_id => 5,
-            :parent_id => parent_issue,
+            :parent_id => parent_issue.id,
             :estimated_hours => '',
             :custom_field_values => {'2' => 'Value for field 2'}})
     child = Issue.find_by_subject( child_issue_subject)
@@ -52,6 +53,36 @@ class IssuesControllerTest < Test::Unit::TestCase
     assert_redirected_to "issues/#{child.id}"
     assert( child.parent == parent_issue,
             "New child has Issue id=#{child.parent} as parent, not id=#{parent_issue}")
+  end
+
+  def test_edit_issue_set_parent
+    parent_issue = issues( :issues_root)
+    moving_issue = issues( :issues_subchild003)
+    @request.session[:user_id] = 2
+
+    post( :edit,
+          :id => moving_issue.id,
+          :project_id => 1,
+          :parent_issue => parent_issue,
+          :issue => {
+            :parent_id => parent_issue.id
+          })
+    assert_redirected_to :action => 'show', :id => moving_issue.id
+    assert moving_issue.reload.parent == parent_issue
+  end
+
+  def test_move_child_to_root
+    parent = issues( :issues_root)
+    child = issues( :issues_child001)
+
+    post( :edit,
+          :id => child.id,
+          :project_id => 1,
+          :issue => {
+            :parent_id => "root",
+          })
+    assert_redirected_to :action => 'show', :id => child.id
+    assert child.reload.root?
   end
 
   def test_add_subissue_should_redirect_to_action_new
