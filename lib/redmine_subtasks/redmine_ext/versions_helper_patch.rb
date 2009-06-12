@@ -14,7 +14,7 @@ module RedmineSubtasks
       module InstanceMethods    
 
         def render_list_of_related_issues( issues, version, current_level = 1)
-          issues_on_current_level = issues.select { |i| i.hierarchical_level == current_level }
+          issues_on_current_level = issues.select { |i| i.level == current_level }
           issues -= issues_on_current_level
           content_tag( 'ul') do
             html = ''
@@ -31,7 +31,7 @@ module RedmineSubtasks
                 link_to_issue(issue, opts)  + ": " + h(issue.subject)
               end
               children_to_print = issues & issue.children
-              children_to_print += issues.select { |i| i.hierarchical_level >= current_level + 2}
+              children_to_print += issues.select { |i| i.level >= current_level + 2}
               unless children_to_print.empty?
                 html << render_list_of_related_issues( children_to_print, version, current_level + 1)
               end

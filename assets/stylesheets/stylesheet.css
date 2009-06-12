@@ -1,26 +1,26 @@
 /***** Subtasks *****/
 /*blocks composed of icon (+, - or none), project identification (if there is one) and link to the task*/
-.issue-subject-level-1, .issue-subject-level-1 .issue-subject { 
+.issue-subject-level-0, .issue-subject-level-0 .issue-subject { 
     margin-left: 0em;
 }
 
-.issue-subject-level-2, .issue-subject-level-2 .issue-subject { 
+.issue-subject-level-1, .issue-subject-level-1 .issue-subject { 
     margin-left: 1em;
 }
 
-.issue-subject-level-3, .issue-subject-level-3 .issue-subject { 
+.issue-subject-level-2, .issue-subject-level-2 .issue-subject { 
     margin-left: 2em;
 }
 
-.issue-subject-level-4, .issue-subject-level-4 .issue-subject { 
+.issue-subject-level-3, .issue-subject-level-3 .issue-subject { 
     margin-left: 3em;
 }
 
-.issue-subject-level-5, .issue-subject-level-5 .issue-subject { 
+.issue-subject-level-4, .issue-subject-level-4 .issue-subject { 
     margin-left: 4em;
 }
 
-.issue-subject-level-2, .issue-subject-level-2 .issue-subject, .issue-subject-level-3, .issue-subject-level-3 .issue-subject, .issue-subject-level-4, .issue-subject-level-4 .issue-subject, .issue-subject-level-5, .issue-subject-level-5 .issue-subject { 
+.issue-subject-level-1, .issue-subject-level-1 .issue-subject, .issue-subject-level-2, .issue-subject-level-2 .issue-subject, .issue-subject-level-3, .issue-subject-level-3 .issue-subject, .issue-subject-level-4, .issue-subject-level-4 .issue-subject { 
     background-image: url(../images/corner-dots.gif);
     background-repeat: no-repeat;
     background-position: -3px center;

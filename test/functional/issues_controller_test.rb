@@ -119,13 +119,13 @@ class IssuesControllerTest < Test::Unit::TestCase
          :view_options => { :show_parents => "show_always"})
     assert_response :success
     assert_tag( :tag => 'span', 
-                :attributes => { :class => 'issue-subject-level-3'},
+                :attributes => { :class => 'issue-subject-level-2'},
                 :content => /subchild001/)
     assert_tag( :tag => 'span', 
-                :attributes => { :class => 'issue-subject-level-2'},
+                :attributes => { :class => 'issue-subject-level-1'},
                 :content => /child001/)
     assert_tag( :tag => 'span', 
-                :attributes => { :class => 'issue-subject-level-1'},
+                :attributes => { :class => 'issue-subject-level-0'},
                 :content => /root/)
   end
 

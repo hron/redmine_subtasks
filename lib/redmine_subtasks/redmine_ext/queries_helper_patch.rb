@@ -48,7 +48,7 @@ module RedmineSubtasks
                         content_tag('div',
                                     subject_text(issue, value),
                                     :class=>'issue-subject'),
-                        :class=>"issue-subject-level-#{issue.hierarchical_level}")
+                        :class=>"issue-subject-level-#{issue.level}")
           end
         end
         

@@ -1,4 +1,3 @@
-
 class ViewOption
   attr_accessor :name, :available_values
   include Redmine::I18n

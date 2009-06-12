@@ -155,6 +155,20 @@ class IssueTest < Test::Unit::TestCase
       end
     end
   end
+
+  def test_should_not_change_target_version_if_children_from_another_project
+    with_settings :cross_project_issue_relations => true do
+      @root = issues( :issues_root)
+      @issue_another_project = issues( :issue_leaf_from_another_project)
+
+      older_version = versions( :versions_001)
+      newer_version = versions( :onlinestore_1_0)
+      @root.update_attribute :fixed_version,  older_version
+      @issue_another_project.move_to_child_of @root
+      assert @root.reload.fixed_version == older_version
+    end
+  end
+  
   
   private
 

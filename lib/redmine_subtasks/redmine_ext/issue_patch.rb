@@ -17,6 +17,10 @@ module RedmineSubtasks
 
           acts_as_nested_set
 
+          def leaf?
+            new_record? || (right - left == 1)
+          end
+          
           after_save :do_subtasks_hooks
           def do_subtasks_hooks
             if parent
@@ -82,9 +86,9 @@ module RedmineSubtasks
               end
             end
 
-            # If target version is set, but "Due to" date is not, set it as
-            # the same as the date of target version.
-            if due_date.nil? && fixed_version && fixed_version.due_date
+            # If target version is set, but "Due to" date is not, set
+            # it as the same as the date of target version.
+            if leaf? && due_date.nil? && fixed_version && fixed_version.due_date
               self.update_attribute :due_date, fixed_version.due_date
             end
 
@@ -152,7 +156,9 @@ module RedmineSubtasks
           end
 
           def done_ratio
-            if children?
+            if leaf? 
+              read_attribute(:done_ratio)
+            else
               @total_planned_days ||= 0
               @total_actual_days ||= 0
               children.each do |child| # from every subtask get the total number of days and the number of days already "worked"
@@ -162,13 +168,13 @@ module RedmineSubtasks
                 @total_actual_days += actual_days
               end
               @total_done_ratio = @total_planned_days != 0 ? (@total_actual_days * 100 / @total_planned_days).floor : 0
-            else
-              read_attribute(:done_ratio)
             end
           end
           
           def estimated_hours
-            if children?
+            if leaf?
+              read_attribute(:estimated_hours)
+            else
               is_set = false
               children.each do |child|
                 if child.estimated_hours
@@ -181,67 +187,31 @@ module RedmineSubtasks
                 end     
               end
               @est_hours
-            else
-              read_attribute(:estimated_hours)
             end
           end
 
           def due_date
-            if children?
-              children_date = children.find_all { |i| i.due_date } 
-              unless children_date.empty?
-                children_date.sort { |a,b| a.due_date <=> b.due_date} .max .due_date
-              else
-                read_attribute(:due_date)
-              end
-            else
+            if leaf?
               read_attribute(:due_date)
+            else
+              dates = children.map( &:due_date)
+              dates.max if ( dates && dates.any?)
             end
           end  
 
-          def children?
-            children != []
-          end
-          
-          #First level tasks have hierarchical level = 1 and so on
-          def hierarchical_level(issue=self)
-            1 + level
-          end
-          
-          # FIXME: remove this method.
-          def self.find_with_parents( *args)
-            issues = find( *args)
-            return [] if issues.empty?
-            issues.each do |i|
-              while not i.root?
-                issues += [ i.parent ]
-                i = i.parent
-              end
+          [ :due_date, :done_ratio ].each do |method|
+            src = <<-END_SRC
+            def #{method}=(value)
+              write_attribute( :#{method}, value) if leaf?
             end
-            issues.uniq
+            END_SRC
+            class_eval src, __FILE__, __LINE__
           end
 
           def estimated_hours_with_subtasks=( h)
-            if children?
-              write_attribute :estimated_hours, nil
-            else
-              estimated_hours_without_subtasks=( h)
-            end
+            estimated_hours_without_subtasks=( h) if leaf?
           end
           alias_method_chain :estimated_hours=, :subtasks
-          
-          # [ :due_date, :done_ratio ].each do |method|
-          #   src = <<-END_SRC
-          #   def #{method}=(value)
-          #     if children?
-          #       write_attribute :#{method}, nil
-          #     else
-          #       write_attribute :#{method}, :value
-          #     end
-          #   end
-          #   END_SRC
-          #   class_eval src, __FILE__, __LINE__
-          # end
 
           protected
 

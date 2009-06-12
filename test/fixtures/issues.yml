@@ -247,3 +247,24 @@ issues_subchild003:
   parent_id: 11
   lft: "9"
   rgt: "10"
+
+issue_leaf_from_another_project:
+  created_on: <%= 10.days.ago.to_date.to_s(:db) %>
+  project_id: 2
+  updated_on: <%= 10.days.ago.to_date.to_s(:db) %>
+  priority_id: 4
+  subject: issue_leaf_from_another_project
+  id: 15
+  fixed_version_id: 4
+  category_id: 
+  description: This is issue from another project.
+  tracker_id: 1
+  assigned_to_id: 
+  author_id: 2
+  status_id: 1
+  start_date: 
+  due_date: 
+  lock_version: 0
+  parent_id: nil
+  lft: "13"
+  rgt: "14"
