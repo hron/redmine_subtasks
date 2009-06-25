@@ -33,6 +33,10 @@
     filter: alpha(opacity=50);
 }
 
+.issue-emphasis {
+  font-weight: bold;    
+}
+
 .expanded-issue {
 	background-image: url(contract.png);
 	background-repeat: no-repeat;

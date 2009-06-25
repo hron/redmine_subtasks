@@ -1,4 +1,4 @@
-  <% if @issue.root.self_and_descendants.size > 1 %>
+<% if @issue.root.self_and_descendants.size > 1 %>
   <% content_for :header_tags do %>
     <%= javascript_include_tag 'context_menu' %>
     <%= stylesheet_link_tag 'context_menu' %>
@@ -6,11 +6,12 @@
 	<hr />
   <p><strong><%=l(:subtasks_label_subissues)%></strong></p>
   <div id="subissues">
-  <%= render( :partial => 'issues/list',
-							:locals => {
-								:issues => @issue.root.self_and_descendants,
-								:query  => @query }) %>
+		<%= render( :partial => 'issues/list',
+								:locals => {
+									:issues 				 => @issue.root.self_and_descendants,
+									:emphasis_issues => [ @issue ],
+									:query  				 => @query }) %>
   </div>
   <div id="context-menu" style="display: none;"></div>
   <%= javascript_tag "new ContextMenu('#{url_for(:controller => 'issues', :action => 'context_menu')}')" %>
-	<% end %>
+<% end %>

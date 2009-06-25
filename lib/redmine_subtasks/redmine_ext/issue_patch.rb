@@ -68,6 +68,12 @@ module RedmineSubtasks
             # Update start/due dates of following issues
             relations_from.each(&:set_issue_to_dates)
 
+            # If target version is set, but "Due to" date is not, set
+            # it as the same as the date of target version.
+            if leaf? && due_date.nil? && fixed_version && fixed_version.due_date
+              self.update_attribute :due_date, fixed_version.due_date
+            end
+
             if parent
               # Set default status of parent if new status opened the issue.
               if !status.is_closed? && parent.status.is_closed?
@@ -86,11 +92,6 @@ module RedmineSubtasks
               end
             end
 
-            # If target version is set, but "Due to" date is not, set
-            # it as the same as the date of target version.
-            if leaf? && due_date.nil? && fixed_version && fixed_version.due_date
-              self.update_attribute :due_date, fixed_version.due_date
-            end
 
             # Close duplicates if the issue was closed
             if @issue_before_change && !@issue_before_change.closed? && self.closed?
@@ -106,6 +107,35 @@ module RedmineSubtasks
             end
           end
 
+          def create_journal_with_subtasks
+            if @current_journal
+              # attributes changes
+              skip_attrs = %w(id description lock_version created_on updated_on)
+              skip_attrs += %w(due_date done_ratio estimated_hours) unless leaf?
+              
+              (Issue.column_names - skip_attrs).each do |c|
+                unless send(c)==@issue_before_change.send(c)
+                  @current_journal.details << JournalDetail.new(:property => 'attr',
+                                                                :prop_key => c,
+                                                                :old_value => @issue_before_change.send(c),
+                                                                :value => send(c)) 
+                end
+              end
+              
+              # custom fields changes
+              custom_values.each {|c|
+                next if (@custom_values_before_change[c.custom_field_id]==c.value ||
+                         (@custom_values_before_change[c.custom_field_id].blank? && c.value.blank?))
+                @current_journal.details << JournalDetail.new(:property => 'cf', 
+                                                              :prop_key => c.custom_field_id,
+                                                              :old_value => @custom_values_before_change[c.custom_field_id],
+                                                              :value => c.value)
+              }      
+              @current_journal.save
+            end
+          end
+          alias_method_chain :create_journal, :subtasks
+          
           # Moves/copies an issue to a new project and tracker
           # Returns the moved/copied issue on success, false on failure
           def move_to(new_project, new_tracker = nil, options = {})
@@ -192,7 +222,7 @@ module RedmineSubtasks
 
           def due_date
             if leaf?
-              read_attribute(:due_date)
+              read_attribute( :due_date)
             else
               dates = children.map( &:due_date)
               dates.max if ( dates && dates.any?)

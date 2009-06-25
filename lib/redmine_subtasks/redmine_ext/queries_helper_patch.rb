@@ -1,4 +1,4 @@
-require_dependency 'queries_helper' 
+require 'queries_helper'
 
 module RedmineSubtasks
   module RedmineExt
@@ -15,27 +15,32 @@ module RedmineSubtasks
       module InstanceMethods    
 
         def column_content_with_subtasks(column, issue, query)
-          if column.is_a?(QueryCustomFieldColumn)
-            cv = issue.custom_values.detect {|v| v.custom_field_id == column.custom_field.id}
-            show_value(cv)
+          # if column.is_a?(QueryCustomFieldColumn)
+          #   cv = issue.custom_values.detect {|v| v.custom_field_id == column.custom_field.id}
+          #   show_value(cv)
+          # else
+          #   value = issue.send(column.name)
+          #   if value.is_a?(Date)
+          #     format_date(value)
+          #   elsif value.is_a?(Time)
+          #     format_time(value)
+          #   else
+          #     case column.name
+          #     when :subject
+          #       subject_in_tree(issue, value, query)
+          #     when :done_ratio
+          #       progress_bar(value, :width => '80px')
+          #     when :fixed_version
+          #       link_to(h(value), { :controller => 'versions', :action => 'show', :id => issue.fixed_version_id })
+          #     else
+          #       h(value)
+          #     end
+          #   end
+          # end
+          if column.name == :subject
+            subject_in_tree( issue, issue.send( column.name), query)
           else
-            value = issue.send(column.name)
-            if value.is_a?(Date)
-              format_date(value)
-            elsif value.is_a?(Time)
-              format_time(value)
-            else
-              case column.name
-              when :subject
-                subject_in_tree(issue, value, query)
-              when :done_ratio
-                progress_bar(value, :width => '80px')
-              when :fixed_version
-                link_to(h(value), { :controller => 'versions', :action => 'show', :id => issue.fixed_version_id })
-              else
-                h(value)
-              end
-            end
+            column_content_without_subtasks column, issue
           end
         end
         
@@ -61,24 +66,26 @@ module RedmineSubtasks
           html = ""
           html << "<tr id=\"issue-#{issue.id}\" class=\"issue hascontextmenu " +
             ( options[:unfiltered] ? 'issue-unfiltered ' : '') +
+            ( options[:emphasis] ? 'issue-emphasis ' : '' ) +
             "status-#{issue.status.position} priority-#{issue.priority.position} " +
             cycle('odd', 'even') + '">'
           html << '<td class="checkbox">' + check_box_tag( "ids[]", issue.id, false, :id => nil) + '</td>'
           html << '<td>' + link_to( issue.id, :controller => 'issues', :action => 'show', :id => issue) + '</td>'
           query.columns.each do |column|
-            html << content_tag( 'td', column_content(column, issue, query), :class => column.name)
+            html << content_tag( 'td', column_content_with_subtasks(column, issue, query), :class => column.name)
           end
           html << "</tr>"
           html
         end
 
-        def issues_family_content( parent, issues_to_show, query)
+        def issues_family_content( parent, issues_to_show, query, emphasis_issues)
           html = ""
-          html << issue_content( parent, query, :unfiltered => !( issues_to_show.include? parent))
+          html << issue_content( parent, query, :unfiltered => !( issues_to_show.include? parent),
+                                 :emphasis => ( emphasis_issues ? emphasis_issues.include?( parent) : false))
           unless  parent.children.empty?
             parent.children.each do |child|
               if issues_to_show.include?( child) || issues_to_show.detect { |i| i.ancestors.include? child }
-                html << issues_family_content( child, issues_to_show, query)
+                html << issues_family_content( child, issues_to_show, query, emphasis_issues)
               end
             end
           end
