@@ -13,7 +13,7 @@ module RedmineSubtasks
 
       module InstanceMethods    
 
-        def render_list_of_related_issues( issues, version, current_level = 1)
+        def render_list_of_related_issues( issues, version, current_level = 0)
           issues_on_current_level = issues.select { |i| i.level == current_level }
           issues -= issues_on_current_level
           content_tag( 'ul') do

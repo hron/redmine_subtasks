@@ -15,8 +15,10 @@
                                           :conditions => ["tracker_id in (#{@selected_tracker_ids.join(',')})"],
                                           :order => "#{Tracker.table_name}.position, #{Issue.table_name}.id") unless @selected_tracker_ids.empty?
 			                                    
-			 issues = Issue.find_with_parents( issues.collect { |i| i.id })
-       issues ||= []
+			 issues.each do |i|
+				 issues += i.ancestors if i.child?
+			 end
+			 issues.uniq!
     %>
     <% if issues.size > 0 %>
     <fieldset class="related-issues"><legend><%= l(:label_related_issues) %></legend>
