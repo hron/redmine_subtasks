@@ -239,7 +239,7 @@ module RedmineSubtasks
           end
 
           def estimated_hours_with_subtasks=( h)
-            estimated_hours_without_subtasks=( h) if leaf?
+            self.estimated_hours_without_subtasks=( h) if leaf?
           end
           alias_method_chain :estimated_hours=, :subtasks
 
