@@ -1,0 +1,17 @@
+es:
+  subtasks_field_parent: Subproyecto de
+  subtasks_field_parent_issue: Subtarea de
+  subtasks_field_parent_title: Página principal
+
+  subtasks_label_view: "Ver opciones"
+  subtasks_label_children: Principal de
+  subtasks_label_parents: Subtarea de
+  subtasks_label_view_option_parents_do_not_show: Nunca
+  subtasks_label_view_option_parents_show_always: Siempre
+  subtasks_label_view_option_parents_show_and_group: organizar por los principales
+  subtasks_label_view_option_show_parents: Mostrar principales
+  subtasks_label_subissues: Jerarquía de tareas
+  subtasks_label_settings_subissues_list_columns: Columnas para lista de subtareas
+  subtasks_label_settings_delete_children: Eliminar los niños cuando destruye principal
+
+  subtasks_button_add_subissue: Añadir subtarea
