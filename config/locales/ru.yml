@@ -1,0 +1,18 @@
+ru:
+  subtasks_field_parent: Подзадача 
+  subtasks_field_parent_issue: Родительская задача
+  subtasks_field_parent_title: Родительская страница
+
+  subtasks_label_view: Опиции просмотра
+  subtasks_label_children: родительская задача
+  subtasks_label_parents: подзадача
+  subtasks_label_view_option_parents_do_not_show: Никогда
+  subtasks_label_view_option_parents_show_always: Всегда
+  subtasks_label_view_option_parents_show_and_group: Группировать по родительским задачам
+  subtasks_label_view_option_show_parents: Показывать родителей
+  subtasks_label_subissues: Иерархия задач
+  subtasks_label_settings_subissues_list_columns: Отображаемые колонки для списка подзадач
+  subtasks_label_settings_delete_children: Удалять подзадачи при удалении родителя
+
+  subtasks_button_add_subissue: Добавить подзадачу
+
